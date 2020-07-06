@@ -13,6 +13,10 @@ declare-option -docstring 'path to the ipkg file that configures this project' \
 hook global BufCreate .*[.]fst %{
     set-option buffer filetype fstar
 
+    set-option buffer comment_line '//'
+    set-option buffer comment_block_begin '(*'
+    set-option buffer comment_block_end '*)'
+
 	# Mixing tabs and spaces will break
 	# indentation sensitive syntax checking
     hook buffer InsertChar \t %{ try %{
@@ -29,16 +33,17 @@ hook global BufCreate .*[.]fst %{
 
 add-highlighter shared/fstar regions
 add-highlighter shared/fstar/code default-region group
-add-highlighter shared/fstar/string       region (?<!'\\)(?<!')"                 (?<!\\)(\\\\)*"  fill string
-add-highlighter shared/fstar/macro        region ^\h*?\K#                        (?<!\\)\n        fill meta
-add-highlighter shared/fstar/comment      region -recurse \(\* \(\*                  \*\)            fill comment
-add-highlighter shared/fstar/line_comment region --(?:[^!#$%&*+./<>?@\\\^|~=]|$) $                fill comment
-add-highlighter shared/fstar/line_comment2 region \|\|\|(?:[^!#$%&*+./<>?@\\\^|~=]|$) $           fill comment
+add-highlighter shared/fstar/string region (?<!'\\)(?<!')"  (?<!\\)(\\\\)*" fill string
+add-highlighter shared/fstar/macro region ^\h*?\K# (?<!\\)\n fill meta
+add-highlighter shared/fstar/comment region -recurse \(\* \(\* \*\)  fill comment
+add-highlighter shared/fstar/line_comment region --(?:[^!#$%&*+./<>?@\\\^|~=]|$) $ fill comment
+add-highlighter shared/fstar/line_comment2 region \|\|\|(?:[^!#$%&*+./<>?@\\\^|~=]|$) $  fill comment
+add-highlighter shared/fstar/line_comment1 region // $ fill comment
 
 add-highlighter shared/fstar/code/ regex (?<!')\b0x+[A-Fa-f0-9]+ 0:value
 add-highlighter shared/fstar/code/ regex (?<!')\b\d+([.]\d+)? 0:value
 
-add-highlighter shared/fstar/code/ regex (?<!')\b(function|and|as|assume|assert|constraint|decreases|else|ensures|exception|external|fun|in|inherit|initializer|land|lazy|let|logic|match|method|mutable|new|of|opaque|parser|pattern|private|raise|rec|requires|try|type|virtual|when|while|with)(?!')\b 0:keyword
+add-highlighter shared/fstar/code/ regex (?<!')\b(val|function|and|as|assume|assert|constraint|decreases|else|ensures|exception|external|fun|in|inherit|initializer|land|lazy|let|logic|match|method|mutable|new|of|opaque|parser|pattern|private|raise|rec|requires|try|type|virtual|when|while|with)(?!')\b 0:keyword
 add-highlighter shared/fstar/code/ regex (?<!')\b(asr|lnot|lor|lsl|lsr|lxor|mod|not|string|unit|set|map|forall|exists|True|False|true|false|array|bool|char|exn|float|format|format4|nat|int|int32|int64|lazy_t|list|nativeint|option)(?!')\b 0:variable
 add-highlighter shared/fstar/code/ regex (?<!')\b(sig|open|include|module)(?!')\b 0:keyword
 # TODO
