@@ -124,7 +124,7 @@ hook -group fstar-highlight global WinSetOption filetype=fstar %{
 hook global WinSetOption filetype=fstar %{
     set-option window extra_word_chars '_' "'"
     hook window ModeChange insert:.* -group fstar-trim-indent  fstar-trim-indent
-    hook window InsertChar \n -group fstar-indent fstar-indent-on-new-line
+    # hook window InsertChar \n -group fstar-indent fstar-indent-on-new-line
 
     hook -once -always window WinSetOption filetype=.* %{ remove-hooks window fstar-.+ }
 }
